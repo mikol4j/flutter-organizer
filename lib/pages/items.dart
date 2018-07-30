@@ -1,13 +1,19 @@
 import 'package:flutter/material.dart';
 
-import '../items_manager.dart';
-import 'item_add.dart';
+import '../models/item.dart';
+import '../widgets/items/items.dart';
+
+
+
 
 class ItemsPage extends StatelessWidget {
-  @override
-  Widget build(BuildContext ctx) {
-    return Scaffold(
-      drawer: Drawer(
+  final List<Item> items;
+
+
+  ItemsPage(this.items);
+  Widget _buildSideDrawer(BuildContext ctx)
+{
+  return Drawer(
         child: Column(
           children: <Widget>[
             AppBar(
@@ -15,16 +21,27 @@ class ItemsPage extends StatelessWidget {
               title: Text("Choose"),
             ),
             ListTile(
+              leading: Icon(Icons.edit),
               title: Text("Manage Items"),
               onTap: () {
-                Navigator.pushReplacement(ctx, MaterialPageRoute(builder: (ctx) => ItemAdd()));
+                Navigator.pushReplacementNamed(ctx, '/admin');
               },
             ),
           ],
         ),
-      ),
-      appBar: new AppBar(title: Text('Flutter-Organizer')),
-      body: ItemsManager(),
+      );
+}
+
+  @override
+  Widget build(BuildContext ctx) {
+    return Scaffold(
+      drawer: _buildSideDrawer(ctx),
+      appBar: new AppBar(title: Text('Flutter-Organizer'),
+      actions: <Widget>[
+        IconButton(icon: Icon(Icons.favorite),
+        onPressed: () {},)
+      ],),
+      body: Items(items),
     );
   }
 }
